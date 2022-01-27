@@ -29,28 +29,26 @@ public class MeetingViewModel extends ViewModel {
     @NonNull
     private final MeetingRepository meetingRepository;
 
-    private final int id = 0;
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Inject
     public MeetingViewModel(@NonNull MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
     }
 
-    public LiveData<List<Meeting>> getMeetingsLiveData() {
+    public LiveData<List<MeetingItemViewState>> getMeetingItemViewStateLiveData() {
         return Transformations.map(meetingRepository.getMeetingsLiveData(), meetings -> {
-            List<Meeting> meetingsList = new ArrayList<>();
+            List<MeetingItemViewState> meetingItemViewStates = new ArrayList<>();
             for (Meeting meeting : meetings) {
-                meetingsList.add(new Meeting(
-                        meeting.getId(),
-                        meeting.getSubject(),
-                        meeting.getStart(),
-                        meeting.getEnd(),
-                        meeting.getRoom(),
-                        meeting.getParticipants()
-                ));
+                meetingItemViewStates.add(
+                        new MeetingItemViewState(
+                                meeting.getId(),
+                                meeting.getRoom().getColor(),
+                                meeting.getSubject(),
+                                meeting.getParticipants()
+                        )
+                );
             }
-            return meetingsList;
+            return meetingItemViewStates;
         });
     }
 

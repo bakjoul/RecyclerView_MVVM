@@ -36,7 +36,7 @@ public class MeetingActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        viewModel.getMeetingsLiveData().observe(this, meetingList -> adapter.submitList(meetingList));
+        viewModel.getMeetingItemViewStateLiveData().observe(this, meetingItemViewStates -> adapter.submitList(meetingItemViewStates));
 
         b.fabAdd.setOnClickListener(view -> viewModel.addMeeting());
     }

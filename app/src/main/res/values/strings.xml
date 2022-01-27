@@ -11,4 +11,6 @@
     <string name="yoshi">Yoshi</string>
     <string name="donkey">Donkey</string>
     <string name="toad">Toad</string>
+    <string name="room_icon">Room icon</string>
+    <string name="delete_meeting_button">Delete meeting button</string>
 </resources>
