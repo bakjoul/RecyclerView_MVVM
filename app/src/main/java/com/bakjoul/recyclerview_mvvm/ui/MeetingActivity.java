@@ -17,12 +17,10 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class MeetingActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
-
     private ActivityMainBinding b;
 
     private MeetingViewModel viewModel;
-    private ListAdapter adapter;
+    private MeetingAdapter adapter;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -33,22 +31,13 @@ public class MeetingActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(MeetingViewModel.class);
 
-        adapter = new ListAdapter();
+        adapter = new MeetingAdapter();
         RecyclerView recyclerView = findViewById(R.id.rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        // Avec le RecyclerViewAdapter
-        /*Observer<List<Item>> itemListUpdateObserver = items -> adapter.updateItemList(items);
-        viewModel.getItemLiveData().observe(this, itemListUpdateObserver);*/
+        viewModel.getMeetingsLiveData().observe(this, meetingList -> adapter.submitList(meetingList));
 
-        viewModel.getMeetingsLiveData().observe(this, meetingList -> {
-            adapter.submitList(meetingList);
-        });
-
-        b.fabAdd.setOnClickListener(view -> {
-            viewModel.addMeeting();
-        });
+        b.fabAdd.setOnClickListener(view -> viewModel.addMeeting());
     }
-
 }

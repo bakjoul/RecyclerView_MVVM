@@ -6,28 +6,29 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bakjoul.recyclerview_mvvm.databinding.RvItemBinding;
-import com.bakjoul.recyclerview_mvvm.model.Meeting;
+import com.bakjoul.recyclerview_mvvm.data.Meeting;
+import com.bakjoul.recyclerview_mvvm.databinding.MeetingItemviewBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListAdapter extends androidx.recyclerview.widget.ListAdapter<Meeting, ListAdapter.ViewHolder> {
+public class MeetingAdapter extends ListAdapter<Meeting, MeetingAdapter.ViewHolder> {
     @Override
     public void submitList(@Nullable List<Meeting> list) {
         super.submitList(list != null ? new ArrayList<>(list) : null);
     }
 
-    public ListAdapter() {
+    public MeetingAdapter() {
         super(new ItemCallback());
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RvItemBinding b = RvItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        MeetingItemviewBinding b = MeetingItemviewBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(b);
     }
 
@@ -38,9 +39,9 @@ public class ListAdapter extends androidx.recyclerview.widget.ListAdapter<Meetin
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final RvItemBinding b;
+        private final MeetingItemviewBinding b;
 
-        public ViewHolder(RvItemBinding binding) {
+        public ViewHolder(MeetingItemviewBinding binding) {
             super(binding.getRoot());
             this.b = binding;
         }

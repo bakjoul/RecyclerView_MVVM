@@ -1,4 +1,4 @@
-package com.bakjoul.recyclerview_mvvm.repository;
+package com.bakjoul.recyclerview_mvvm.data;
 
 import android.os.Build;
 import android.util.Log;
@@ -7,9 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
-import com.bakjoul.recyclerview_mvvm.model.Meeting;
-import com.bakjoul.recyclerview_mvvm.model.Room;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,7 +19,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class Repository {
+public class MeetingRepository {
 
     private static final String TAG = "Repository";
 
@@ -31,7 +28,7 @@ public class Repository {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Inject
-    public Repository() {
+    public MeetingRepository() {
         generateRandomMeetings();
     }
 
@@ -69,9 +66,25 @@ public class Repository {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void generateRandomMeetings() {
-        addMeeting("Réunion A", LocalDateTime.of(LocalDate.now(), LocalTime.of(14, 0)), LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 0)), Room.PEACH, new ArrayList<>(Arrays.asList("maxime@lamzone.com", "alex@lamzone.com")));
-        addMeeting("Réunion B", LocalDateTime.of(LocalDate.now(), LocalTime.of(16, 0)), LocalDateTime.of(LocalDate.now(), LocalTime.of(17, 0)), Room.MARIO, new ArrayList<>(Arrays.asList("paul@lamzone.com", "viviane@lamzone.com")));
-        addMeeting("Réunion C", LocalDateTime.of(LocalDate.now(), LocalTime.of(19, 0)), LocalDateTime.of(LocalDate.now(), LocalTime.of(19, 45)), Room.LUIGI, new ArrayList<>(Arrays.asList("amandine@lamzone.com", "luc@lamzone.com")));
+        addMeeting(
+                "Réunion A",
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(14, 0)),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 0)),
+                Room.PEACH,
+                new ArrayList<>(Arrays.asList("maxime@lamzone.com", "alex@lamzone.com"))
+        );
+        addMeeting("Réunion B",
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(16, 0)),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(17, 0)),
+                Room.MARIO,
+                new ArrayList<>(Arrays.asList("paul@lamzone.com", "viviane@lamzone.com"))
+        );
+        addMeeting("Réunion C",
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(19, 0)),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(19, 45)),
+                Room.LUIGI,
+                new ArrayList<>(Arrays.asList("amandine@lamzone.com", "luc@lamzone.com"))
+        );
         Log.d(TAG, "generateRandomMeetings: ");
     }
 }

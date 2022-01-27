@@ -1,4 +1,4 @@
-package com.bakjoul.recyclerview_mvvm.model;
+package com.bakjoul.recyclerview_mvvm.data;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.StringRes;
