@@ -1,11 +1,12 @@
 package com.bakjoul.recyclerview_mvvm.ui;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Transformations;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.bakjoul.recyclerview_mvvm.data.Meeting;
@@ -29,27 +30,40 @@ public class MeetingViewModel extends ViewModel {
     @NonNull
     private final MeetingRepository meetingRepository;
 
+    private final MutableLiveData<MeetingViewState> meetingViewStateMutableLiveData = new MutableLiveData<>();
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Inject
     public MeetingViewModel(@NonNull MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
+
+        init();
     }
 
-    public LiveData<List<MeetingItemViewState>> getMeetingItemViewStateLiveData() {
-        return Transformations.map(meetingRepository.getMeetingsLiveData(), meetings -> {
-            List<MeetingItemViewState> meetingItemViewStates = new ArrayList<>();
-            for (Meeting meeting : meetings) {
-                meetingItemViewStates.add(
-                        new MeetingItemViewState(
-                                meeting.getId(),
-                                meeting.getRoom().getColor(),
-                                meeting.getSubject(),
-                                meeting.getParticipants()
-                        )
-                );
-            }
-            return meetingItemViewStates;
-        });
+    private void init() {
+        LiveData<List<Meeting>> meetingsLiveData = meetingRepository.getMeetingsLiveData();
+        meetingViewStateMutableLiveData.setValue(getMeetingViewState(meetingsLiveData.getValue()));
+    }
+
+    @NonNull
+    public LiveData<MeetingViewState> getMeetingViewStateLiveData() {
+        return meetingViewStateMutableLiveData;
+    }
+
+    @NonNull
+    private MeetingViewState getMeetingViewState(@NonNull final List<Meeting> meetings) {
+        List<MeetingItemViewState> meetingItemViewStates = new ArrayList<>();
+        for (Meeting meeting : meetings) {
+            meetingItemViewStates.add(
+                    new MeetingItemViewState(
+                            meeting.getId(),
+                            meeting.getRoom().getColor(),
+                            meeting.getSubject(),
+                            meeting.getParticipants()
+                    )
+            );
+        }
+        return new MeetingViewState(meetingItemViewStates);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -60,5 +74,6 @@ public class MeetingViewModel extends ViewModel {
                 LocalDateTime.of(LocalDate.now(), LocalTime.of(17, 0)),
                 Room.BOWSER,
                 new ArrayList<>(Arrays.asList("toto", "tata")));
+        Log.d("ViewModel", "addMeeting: done");
     }
 }

@@ -23,7 +23,7 @@ public class MeetingRepository {
 
     private static final String TAG = "Repository";
 
-    private final MutableLiveData<List<Meeting>> meetingsLiveData = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<Meeting>> meetingsLiveData = new MutableLiveData<>();
     private long id = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -32,6 +32,7 @@ public class MeetingRepository {
         generateRandomMeetings();
     }
 
+    @NonNull
     public LiveData<List<Meeting>> getMeetingsLiveData() {
         return meetingsLiveData;
     }
