@@ -6,7 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.bakjoul.recyclerview_mvvm.data.Meeting;
@@ -30,7 +30,7 @@ public class MeetingViewModel extends ViewModel {
     @NonNull
     private final MeetingRepository meetingRepository;
 
-    private final MutableLiveData<MeetingViewState> meetingViewStateMutableLiveData = new MutableLiveData<>();
+    private final MediatorLiveData<MeetingViewState> meetingViewStateMediatorLiveData = new MediatorLiveData<>();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Inject
@@ -41,13 +41,13 @@ public class MeetingViewModel extends ViewModel {
     }
 
     private void init() {
-        LiveData<List<Meeting>> meetingsLiveData = meetingRepository.getMeetingsLiveData();
-        meetingViewStateMutableLiveData.setValue(getMeetingViewState(meetingsLiveData.getValue()));
+        final LiveData<List<Meeting>> meetingsLiveData = meetingRepository.getMeetingsLiveData();
+        meetingViewStateMediatorLiveData.addSource(meetingsLiveData, meetings -> meetingViewStateMediatorLiveData.setValue(getMeetingViewState(meetingsLiveData.getValue())));
     }
 
     @NonNull
     public LiveData<MeetingViewState> getMeetingViewStateLiveData() {
-        return meetingViewStateMutableLiveData;
+        return meetingViewStateMediatorLiveData;
     }
 
     @NonNull
@@ -74,6 +74,5 @@ public class MeetingViewModel extends ViewModel {
                 LocalDateTime.of(LocalDate.now(), LocalTime.of(17, 0)),
                 Room.BOWSER,
                 new ArrayList<>(Arrays.asList("toto", "tata")));
-        Log.d("ViewModel", "addMeeting: done");
     }
 }

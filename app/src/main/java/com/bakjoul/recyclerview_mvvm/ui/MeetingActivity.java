@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.bakjoul.recyclerview_mvvm.R;
 import com.bakjoul.recyclerview_mvvm.databinding.ActivityMainBinding;
@@ -37,12 +36,7 @@ public class MeetingActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        //viewModel.getMeetingItemViewStateLiveData().observe(this, meetingItemViewStates -> adapter.submitList(meetingItemViewStates));
-        viewModel.getMeetingViewStateLiveData().observe(this, meetingViewState -> {
-            adapter.submitList(meetingViewState.getMeetingViewStateItemList());
-            String size = String.valueOf(meetingViewState.getMeetingViewStateItemList().size());
-            Log.d("MeetingActivity", size);
-        });
+        viewModel.getMeetingViewStateLiveData().observe(this, meetingViewState -> adapter.submitList(meetingViewState.getMeetingViewStateItemList()));
 
         b.fabAdd.setOnClickListener(view -> viewModel.addMeeting());
     }
